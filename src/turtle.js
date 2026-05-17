@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
-const GROWTH_SCALES = [0.28, 0.58, 1.0];
-const MOVE_SPEED = [2.0, 2.8, 3.5]; // grows faster as turtle matures
+const GROWTH_SCALES = [0.22, 0.34, 0.50, 0.68, 0.84, 1.0];
+const MOVE_SPEED = [1.9, 2.2, 2.6, 3.0, 3.3, 3.5]; // grows faster as turtle matures
 const TURN_SPEED = 1.8;
 const WORLD_RADIUS = 52;
 const GROUND_Y_BASE = 0.6; // leg bottom in local space — scale this with growth stage
@@ -16,28 +16,29 @@ function buildTurtleMesh() {
   // Body
   const bodyGeo = new THREE.SphereGeometry(1, 8, 6);
   bodyGeo.scale(1.2, 0.65, 1.0);
-  const body = new THREE.Mesh(bodyGeo, flat(0xd4a84b));
+  const body = new THREE.Mesh(bodyGeo, new THREE.MeshLambertMaterial({ color: 0xd49838, emissive: 0x1d1404, flatShading: true }));
   body.castShadow = true;
   g.add(body);
 
-  // Shell (dome)
+  // Shell (dome) — medium olive-green base forms the scute border network.
+  // Sits clearly against the sandy ground while still reading as a turtle.
   const shellGeo = new THREE.SphereGeometry(1.05, 8, 5, 0, Math.PI * 2, 0, Math.PI * 0.6);
-  shellGeo.scale(1.15, 0.85, 1.0);
-  const shell = new THREE.Mesh(shellGeo, flat(0x5a7a3a));
+  shellGeo.scale(1.15, 0.92, 1.0);
+  const shell = new THREE.Mesh(shellGeo, new THREE.MeshLambertMaterial({ color: 0x4a7018, emissive: 0x0c1404, flatShading: true }));
   shell.position.y = 0.1;
   shell.castShadow = true;
   g.add(shell);
 
-  // Shell pattern (geometric plates)
-  const plateColor = flat(0x4a6a2a);
+  // Scute centers — bright warm amber on top of the darker base, like the real animal.
+  const plateColor = new THREE.MeshLambertMaterial({ color: 0xedb010, emissive: 0x181000, flatShading: true });
   const platePositions = [
-    [0, 0.9, 0, 0.35],
-    [0.38, 0.78, 0.2, 0.25],
-    [-0.38, 0.78, 0.2, 0.25],
-    [0.38, 0.78, -0.2, 0.25],
-    [-0.38, 0.78, -0.2, 0.25],
-    [0, 0.75, 0.45, 0.22],
-    [0, 0.75, -0.45, 0.22],
+    [0,     0.92,  0,    0.38], // central vertebral
+    [0.38,  0.80,  0.22, 0.28], // right costal, front
+    [-0.38, 0.80,  0.22, 0.28], // left costal, front
+    [0.38,  0.80, -0.22, 0.28], // right costal, back
+    [-0.38, 0.80, -0.22, 0.28], // left costal, back
+    [0,     0.76,  0.48, 0.25], // front marginal
+    [0,     0.76, -0.48, 0.25], // rear marginal
   ];
   platePositions.forEach(([px, py, pz, r]) => {
     const p = new THREE.Mesh(new THREE.CircleGeometry(r, 5), plateColor);
@@ -52,7 +53,7 @@ function buildTurtleMesh() {
 
   // Head
   const headGeo = new THREE.SphereGeometry(0.38, 7, 6);
-  const head = new THREE.Mesh(headGeo, flat(0xcf9e44));
+  const head = new THREE.Mesh(headGeo, flat(0xcc9838));
   head.position.set(0, 0.05, 1.1);
   head.castShadow = true;
   retractable.add(head);
@@ -66,7 +67,7 @@ function buildTurtleMesh() {
   });
 
   // Legs (4)
-  const legMat = flat(0xcf9e44);
+  const legMat = flat(0xcc9838);
   [
     [0.9, -0.3, 0.6], [-0.9, -0.3, 0.6],
     [0.85, -0.3, -0.6], [-0.85, -0.3, -0.6]

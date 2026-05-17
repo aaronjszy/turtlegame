@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 
+const RACCOON_DURATION = 120;
+
 function flat(color) {
   return new THREE.MeshLambertMaterial({ color, flatShading: true });
 }
@@ -71,6 +73,7 @@ export class Raccoon {
     this._audio = audio;
 
     this._mesh = makeRaccoonMesh();
+    this._mesh.traverse(obj => { obj.frustumCulled = false; });
     this._mesh.visible = false;
     scene.add(this._mesh);
 
@@ -84,7 +87,7 @@ export class Raccoon {
     const isEvening = dayNight ? dayNight.isEvening : false;
     const isNight = dayNight ? dayNight.isNight : false;
 
-    if ((isEvening || isNight) && !this._active && Math.random() < dt * 0.003) {
+    if ((isEvening || isNight) && !this._active && Math.random() < dt * 0.012) {
       this._spawn();
     }
 
@@ -137,7 +140,7 @@ export class Raccoon {
       this.turtle.mesh.position.z += (dz / len) * 0.6 * dt;
     }
 
-    if (this._lifetime > 30 || (!isEvening && !isNight)) {
+    if (this._lifetime > RACCOON_DURATION || (!isEvening && !isNight)) {
       this._despawn();
     }
   }

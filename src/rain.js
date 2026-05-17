@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-const DROP_COUNT       = 260;
+const DROP_COUNT       = 420;
 const SPAWN_W          = 84;
 const RAIN_INTERVAL_MIN = 70;
 const RAIN_INTERVAL_MAX = 140;
@@ -44,7 +44,7 @@ export class RainSystem {
       const x      = (Math.random() - 0.5) * SPAWN_W;
       const y      = Math.random() * 18;
       const z      = (Math.random() - 0.5) * SPAWN_W;
-      const streak = 0.32 + Math.random() * 0.22;
+      const streak = 0.6 + Math.random() * 0.5;
       pos[i * 6]     = x;  pos[i * 6 + 1] = y;          pos[i * 6 + 2] = z;
       pos[i * 6 + 3] = x;  pos[i * 6 + 4] = y - streak; pos[i * 6 + 5] = z;
       speeds[i] = 9 + Math.random() * 7;
@@ -53,7 +53,7 @@ export class RainSystem {
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
     this._rainMesh = new THREE.LineSegments(
       geo,
-      new THREE.LineBasicMaterial({ color: 0xaaccdd, transparent: true, opacity: 0.42 })
+      new THREE.LineBasicMaterial({ color: 0xaaccdd, transparent: true, opacity: 0.75 })
     );
     this._rainSpeeds = speeds;
     this._scene.add(this._rainMesh);

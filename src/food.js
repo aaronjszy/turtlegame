@@ -5,11 +5,11 @@ function flat(color) {
 }
 
 const FOOD_TYPES = [
-  { id: 'gopher_apple',   color: 0xffcc33, scale: 0.35, spawnY: 0.35, hunger: 2.0, rarity: 0.06, name: 'Gopher Apple' },
-  { id: 'palmetto_berry', color: 0x8844cc, scale: 0.22, spawnY: 0.22, hunger: 0.8, rarity: 0.25, name: 'Palmetto Berry' },
-  { id: 'flower',         color: 0xff66aa, scale: 0.25, spawnY: 0.0,  hunger: 0.7, rarity: 0.25, name: 'Flower' },
-  { id: 'mushroom',       color: 0xcc6633, scale: 0.28, spawnY: 0.15, hunger: 1.2, rarity: 0.14, name: 'Mushroom', scrubOnly: true },
-  { id: 'grass',          color: 0x88cc44, scale: 0.18, spawnY: 0.0,  hunger: 0.4, rarity: 0.30, name: 'Grass' },
+  { id: 'gopher_apple',   color: 0xffcc00, scale: 0.35, spawnY: 0.35, hunger: 2.0, rarity: 0.06, name: 'Gopher Apple' },
+  { id: 'palmetto_berry', color: 0x9922ee, scale: 0.22, spawnY: 0.22, hunger: 0.8, rarity: 0.25, name: 'Palmetto Berry' },
+  { id: 'flower',         color: 0xff2299, scale: 0.25, spawnY: 0.0,  hunger: 0.7, rarity: 0.25, name: 'Flower' },
+  { id: 'mushroom',       color: 0xdd4410, scale: 0.28, spawnY: 0.15, hunger: 1.2, rarity: 0.14, name: 'Mushroom', scrubOnly: true },
+  { id: 'grass',          color: 0x66cc11, scale: 0.18, spawnY: 0.0,  hunger: 0.4, rarity: 0.30, name: 'Grass' },
 ];
 
 const EAT_RADIUS = 1.0;
@@ -181,6 +181,7 @@ export class FoodSystem {
     setTimeout(() => { this.turtle.mesh.position.y = 0; }, 150);
 
     import('./ui.js').then(m => {
+      m.checkGrowth(m.showMessage);
       // Every 5 foods eaten, show growth progress so the player knows why eating matters
       const goal = s.growthStage === 0 ? 30 : s.growthStage === 1 ? 100 : null;
       if (goal && s.foodsEaten % 5 === 0) {

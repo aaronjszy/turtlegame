@@ -9,7 +9,7 @@ const DIG_COOLDOWN       = 1.5;
 const OUTSIDE_TIME_NEEDED = 40; // seconds outside required between digs
 
 // Digs needed to reach next level
-const DIGS_PER_LEVEL = [6, 10, 14];
+const DIGS_PER_LEVEL = [4, 8, 10];
 
 export const BURROW_LEVELS = [
   { name: 'Starter', capacity: 1, holeScale: 1.0 },

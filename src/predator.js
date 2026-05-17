@@ -70,6 +70,7 @@ export class Hawk {
     this._state = 'idle'; // idle | circling | diving | retreating
 
     this._mesh = makeHawkMesh();
+    this._mesh.traverse(obj => { obj.frustumCulled = false; });
     this._mesh.visible = false;
     scene.add(this._mesh);
 

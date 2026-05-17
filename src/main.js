@@ -11,7 +11,8 @@ import { Hawk } from './predator.js';
 import { Raccoon } from './raccoon.js';
 import { SaveSystem } from './save.js';
 import { Audio } from './audio.js';
-import { showMessage, showDaySummary, initUI, initOnboarding } from './ui.js';
+import { showMessage, showDaySummary, initUI, initOnboarding, checkGrowth } from './ui.js';
+import { getSaveList, exportSave, importSave } from './save.js';
 import { Fireflies } from './fireflies.js';
 import { PondSystem } from './pond.js';
 import { ParticleSystem } from './particles.js';
@@ -33,42 +34,86 @@ window.addEventListener('resize', () => {
 });
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0x87ceeb, 40, 120);
+scene.fog = new THREE.Fog(0x87ceeb, 55, 165);
 
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 300);
 
-// ── Wait for name entry ───────────────────────────────────────────────────────
+// ── Save picker / name entry ───────────────────────────────────────────────────
 const overlay = document.getElementById('overlay');
-const nameInput = document.getElementById('nameInput');
-const nameSubmit = document.getElementById('nameSubmit');
+const STAGE_NAMES = ['Hatchling', 'Small Turtle', 'Juvenile', 'Young Adult', 'Adult', 'Elder Tortoise'];
 
-// Check for an existing save and offer to continue
-const _existingSave = (() => {
-  try { return JSON.parse(localStorage.getItem('turtlegame_save')); } catch { return null; }
-})();
-if (_existingSave?.name) {
-  nameInput.value = _existingSave.name;
-  document.querySelector('#overlay p').textContent = `Welcome back, ${_existingSave.name}! 🐢`;
-  nameSubmit.textContent = 'Continue!';
-
-  const newBtn = document.createElement('button');
-  newBtn.textContent = 'New Game';
-  newBtn.style.cssText = nameSubmit.style.cssText +
-    ';font-family:inherit;font-size:16px;padding:8px 18px;border-radius:12px;border:none;' +
-    'background:rgba(255,255,255,0.15);color:#fff8e1;cursor:pointer;margin-left:8px;';
-  nameSubmit.after(newBtn);
-
-  newBtn.addEventListener('click', () => {
-    localStorage.removeItem('turtlegame_save');
-    nameInput.value = '';
-    document.querySelector('#overlay p').textContent = 'What will you name your turtle?';
-    nameSubmit.textContent = "Let's go!";
-    newBtn.remove();
-    nameInput.focus();
+function showSavePicker() {
+  const saves = getSaveList();
+  overlay.innerHTML = `
+    <h1>🐢 Baby Gopher Tortoise</h1>
+    <p>${saves.length ? 'Choose your turtle:' : 'No turtles yet!'}</p>
+    <div id="saveSlots">
+      ${saves.map(s => `
+        <div class="saveSlotRow">
+          <button class="saveSlot" data-name="${s.name}">
+            🐢 ${s.name}
+            <small>Day ${s.day} &nbsp;·&nbsp; ${STAGE_NAMES[s.growthStage] ?? 'Hatchling'}</small>
+          </button>
+          <button class="exportBtn" data-name="${s.name}" title="Export save file">💾</button>
+        </div>
+      `).join('')}
+      <button id="newTurtleBtn">+ New Turtle</button>
+      <button id="importSaveBtn">📂 Import Save</button>
+      <input type="file" id="importFileInput" accept=".json" style="display:none">
+    </div>
+  `;
+  overlay.querySelectorAll('.saveSlot').forEach(btn => {
+    btn.addEventListener('click', () => startGame(btn.dataset.name));
   });
-} else {
-  nameInput.focus();
+  overlay.querySelectorAll('.exportBtn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      exportSave(btn.dataset.name);
+    });
+  });
+  document.getElementById('newTurtleBtn').addEventListener('click', showNameInput);
+  document.getElementById('importSaveBtn').addEventListener('click', () => {
+    document.getElementById('importFileInput').click();
+  });
+  document.getElementById('importFileInput').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const name = importSave(ev.target.result);
+      if (name) {
+        showSavePicker();
+      } else {
+        alert('Could not import save — file may be invalid.');
+      }
+    };
+    reader.readAsText(file);
+  });
 }
+
+function showNameInput() {
+  const hasSaves = getSaveList().length > 0;
+  overlay.innerHTML = `
+    <h1>🐢 Baby Gopher Tortoise</h1>
+    <p>What will you name your turtle?</p>
+    <div id="nameForm">
+      <input id="nameInput" type="text" maxlength="20" placeholder="Dave..." autocomplete="off" />
+      <button id="nameSubmit">Let's go!</button>
+      ${hasSaves ? '<button id="backBtn">← Back</button>' : ''}
+    </div>
+  `;
+  const nameInput = document.getElementById('nameInput');
+  nameInput.focus();
+  document.getElementById('nameSubmit').addEventListener('click', () => {
+    startGame(nameInput.value.trim() || 'Dave');
+  });
+  nameInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') startGame(nameInput.value.trim() || 'Dave');
+  });
+  document.getElementById('backBtn')?.addEventListener('click', showSavePicker);
+}
+
+showSavePicker();
 
 function startGame(name) {
   overlay.style.display = 'none';
@@ -99,6 +144,7 @@ function startGame(name) {
 
   initUI(save, burrow, animals, dayNight, audio, showMessage, showDaySummary, goals);
   initOnboarding(save);
+  checkGrowth(showMessage);
 
   // ── Game loop ──────────────────────────────────────────────────────────────
   const clock = new THREE.Clock();
@@ -129,14 +175,3 @@ function startGame(name) {
   animate();
 }
 
-nameSubmit.addEventListener('click', () => {
-  const name = nameInput.value.trim() || 'Dave';
-  startGame(name);
-});
-
-nameInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    const name = nameInput.value.trim() || 'Dave';
-    startGame(name);
-  }
-});

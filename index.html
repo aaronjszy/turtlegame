@@ -69,9 +69,9 @@
 
       #message {
         position: absolute;
-        top: 50%;
+        top: 15%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translateX(-50%);
         color: #fff;
         font-size: 28px;
         text-shadow: 0 2px 8px rgba(0,0,0,0.8);
@@ -170,17 +170,107 @@
         pointer-events: all;
       }
       #summary button:hover { background: #f9d87a; }
+
+      #saveSlots {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .saveSlot {
+        font-family: inherit;
+        font-size: 18px;
+        padding: 12px 32px;
+        border-radius: 14px;
+        border: 2px solid #f4c460;
+        background: rgba(255,255,255,0.08);
+        color: #fff8e1;
+        cursor: pointer;
+        width: 260px;
+        text-align: center;
+        line-height: 1.5;
+      }
+
+      .saveSlot:hover { background: rgba(244,196,96,0.2); }
+
+      .saveSlot small {
+        display: block;
+        font-size: 13px;
+        opacity: 0.7;
+      }
+
+      #newTurtleBtn {
+        font-family: inherit;
+        font-size: 17px;
+        padding: 10px 28px;
+        border-radius: 12px;
+        border: 2px dashed rgba(255,248,225,0.4);
+        background: transparent;
+        color: rgba(255,248,225,0.7);
+        cursor: pointer;
+        width: 260px;
+      }
+
+      #newTurtleBtn:hover { border-color: #f4c460; color: #fff8e1; }
+
+      #backBtn {
+        font-family: inherit;
+        font-size: 16px;
+        padding: 8px 18px;
+        border-radius: 10px;
+        border: none;
+        background: rgba(255,255,255,0.12);
+        color: #fff8e1;
+        cursor: pointer;
+      }
+
+      #backBtn:hover { background: rgba(255,255,255,0.22); }
+
+      .saveSlotRow {
+        display: flex;
+        gap: 8px;
+        align-items: stretch;
+        width: 260px;
+      }
+
+      .saveSlotRow .saveSlot {
+        flex: 1;
+        width: auto;
+      }
+
+      .exportBtn {
+        font-family: inherit;
+        font-size: 18px;
+        padding: 0 14px;
+        border-radius: 14px;
+        border: 2px solid rgba(244,196,96,0.5);
+        background: rgba(255,255,255,0.06);
+        color: #fff8e1;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .exportBtn:hover { background: rgba(244,196,96,0.2); border-color: #f4c460; }
+
+      #importSaveBtn {
+        font-family: inherit;
+        font-size: 17px;
+        padding: 10px 28px;
+        border-radius: 12px;
+        border: 2px dashed rgba(255,248,225,0.4);
+        background: transparent;
+        color: rgba(255,248,225,0.7);
+        cursor: pointer;
+        width: 260px;
+      }
+
+      #importSaveBtn:hover { border-color: #f4c460; color: #fff8e1; }
     </style>
   </head>
   <body>
-    <div id="overlay">
-      <h1>🐢 Baby Gopher Tortoise</h1>
-      <p>What will you name your turtle?</p>
-      <div id="nameForm">
-        <input id="nameInput" type="text" maxlength="20" placeholder="Dave..." autocomplete="off" />
-        <button id="nameSubmit">Let's go!</button>
-      </div>
-    </div>
+    <div id="overlay"></div>
 
     <div id="hud">
       <div id="hunger"></div>

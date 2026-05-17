@@ -524,6 +524,7 @@ export class AnimalFriends {
     const home  = { x: Math.cos(angle) * r, z: Math.sin(angle) * r };
 
     const mesh = makeFriendMesh(animal);
+    mesh.traverse(obj => { obj.frustumCulled = false; });
     mesh.position.set(home.x, 0.5, home.z);
     this.scene.add(mesh);
 
@@ -652,6 +653,7 @@ export class AnimalFriends {
     this._wanderAngle = Math.random() * Math.PI * 2;
 
     this._waitMesh = makeFriendMesh(this._waiting);
+    this._waitMesh.traverse(obj => { obj.frustumCulled = false; });
     this._waitMesh.position.set(this._waitHome.x, 0.5, this._waitHome.z);
     this.scene.add(this._waitMesh);
     this.burrow.showExclamation(true);

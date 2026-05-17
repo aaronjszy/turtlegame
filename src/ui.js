@@ -38,8 +38,11 @@ export function checkGrowth(showMsg) {
   if (!_save) return;
   const s = _save;
   let newStage = s.growthStage;
-  if (s.growthStage < 1 && s.day >= 5 && s.foodsEaten >= 30) newStage = 1;
-  if (s.growthStage < 2 && s.day >= 15 && s.foodsEaten >= 100) newStage = 2;
+  if (s.growthStage < 1 && s.foodsEaten >= 30) newStage = 1;
+  if (s.growthStage < 2 && s.foodsEaten >= 80) newStage = 2;
+  if (s.growthStage < 3 && s.foodsEaten >= 160) newStage = 3;
+  if (s.growthStage < 4 && s.foodsEaten >= 280) newStage = 4;
+  if (s.growthStage < 5 && s.foodsEaten >= 420) newStage = 5;
 
   if (newStage > s.growthStage) {
     s.growthStage = newStage;
@@ -67,7 +70,7 @@ export function showDaySummary(save, food, animals, onDone) {
 
   const completedDay = save.day - 1;
   const foodToday = save.foodsEatenToday || 0;
-  const stage = ['Hatchling', 'Juvenile', 'Young Adult'][save.growthStage];
+  const stage = ['Hatchling', 'Small Turtle', 'Juvenile', 'Young Adult', 'Adult', 'Elder Tortoise'][save.growthStage];
   const friendCount = (save.friendsMovedin || []).length;
 
   // Update header and button

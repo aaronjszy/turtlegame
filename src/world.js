@@ -22,7 +22,7 @@ function makeGround(scene) {
   }
   geo.computeVertexNormals();
   // Warm sandy soil — longleaf pine sandhill
-  const mesh = new THREE.Mesh(geo, flat(0xd4aa58));
+  const mesh = new THREE.Mesh(geo, flat(0xdfa030));
   mesh.rotation.x = -Math.PI / 2;
   mesh.receiveShadow = true;
   scene.add(mesh);
@@ -31,7 +31,7 @@ function makeGround(scene) {
 
 // Wiregrass tuft — the signature ground cover of longleaf pine sandhills
 function addGrassTuft(scene, x, z) {
-  const mat = flat(0x9aaa48);
+  const mat = flat(0x7ec428);
   for (let i = 0; i < 5; i++) {
     const blade = new THREE.Mesh(
       new THREE.ConeGeometry(0.045, 0.28 + Math.random() * 0.18, 4),
@@ -51,14 +51,14 @@ function addGrassTuft(scene, x, z) {
 // Sandy patch (brighter area)
 function sandPatch(scene, x, z, r) {
   const geo = new THREE.CircleGeometry(r, 8);
-  const mesh = new THREE.Mesh(geo, decal(0xe8c878));
+  const mesh = new THREE.Mesh(geo, decal(0xf5d040));
   mesh.rotation.x = -Math.PI / 2;
   mesh.position.set(x, 0.06, z);
   scene.add(mesh);
   return mesh;
 }
 
-function addBush(scene, x, z, scale = 1, color = 0x6b8c42) {
+function addBush(scene, x, z, scale = 1, color = 0x58aa22) {
   const geo = new THREE.IcosahedronGeometry(1.2 * scale, 0);
   const mesh = new THREE.Mesh(geo, flat(color));
   mesh.position.set(x, 0.8 * scale, z);
@@ -78,7 +78,7 @@ function addTree(scene, x, z) {
 
   // Small sparse crown high up — characteristic longleaf silhouette
   const foliageGeo = new THREE.IcosahedronGeometry(1.8, 0);
-  const foliage = new THREE.Mesh(foliageGeo, flat(0x3d6b2e));
+  const foliage = new THREE.Mesh(foliageGeo, flat(0x1e8020));
   foliage.position.set(x, h + 1.2, z);
   foliage.castShadow = true;
   scene.add(foliage);
@@ -109,7 +109,7 @@ function addCloud(scene, x, y, z) {
 // Pond
 function makePond(scene) {
   const geo = new THREE.CircleGeometry(8, 12);
-  const mesh = new THREE.Mesh(geo, decal(0x5ba8d8));
+  const mesh = new THREE.Mesh(geo, decal(0x1a96e0));
   mesh.rotation.x = -Math.PI / 2;
   mesh.position.set(-20, 0.06, -22);
   scene.add(mesh);
@@ -118,7 +118,7 @@ function makePond(scene) {
   for (let i = 0; i < 5; i++) {
     const angle = Math.random() * Math.PI * 2;
     const r = Math.random() * 5;
-    const pad = new THREE.Mesh(new THREE.CircleGeometry(0.6 + Math.random() * 0.4, 7), decal(0x4a9e3f));
+    const pad = new THREE.Mesh(new THREE.CircleGeometry(0.6 + Math.random() * 0.4, 7), decal(0x22b040));
     pad.rotation.x = -Math.PI / 2;
     pad.position.set(-20 + Math.cos(angle) * r, 0.07, -22 + Math.sin(angle) * r);
     scene.add(pad);
@@ -162,7 +162,7 @@ function makeBoundaries(scene) {
     const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.28, h, 5), flat(0x3c2510));
     trunk.position.set(tx, h / 2, tz);
     scene.add(trunk);
-    const canopy = new THREE.Mesh(new THREE.IcosahedronGeometry(2.2 + Math.random() * 1.2, 0), flat(0x1a3010));
+    const canopy = new THREE.Mesh(new THREE.IcosahedronGeometry(2.2 + Math.random() * 1.2, 0), flat(0x103a0c));
     canopy.position.set(tx, h + 1.2, tz);
     scene.add(canopy);
   }
@@ -171,7 +171,7 @@ function makeBoundaries(scene) {
   for (let a = 0; a < Math.PI * 2; a += 0.18) {
     const r = 58 + Math.random() * 4;
     const x = Math.cos(a) * r, z = Math.sin(a) * r;
-    addBush(scene, x, z, 1.5 + Math.random(), 0x3a6b2a);
+    addBush(scene, x, z, 1.5 + Math.random(), 0x286018);
   }
 
   // Creek (north boundary)
@@ -251,7 +251,7 @@ export class World {
     for (let i = 0; i < 15; i++) {
       const x = 22 + (Math.random() - 0.5) * 14;
       const z = -18 + (Math.random() - 0.5) * 14;
-      addBush(scene, x, z, 0.6 + Math.random() * 0.4, 0x5a8832);
+      addBush(scene, x, z, 0.6 + Math.random() * 0.4, 0x48a818);
     }
 
     // Scrub Forest Edge (west) — trees are solid
@@ -293,7 +293,7 @@ export class World {
     // Surrounding dirt ring
     const ring = new THREE.Mesh(
       new THREE.RingGeometry(0.7, 2.2, 14),
-      decal(0xb8913a)
+      decal(0xc48428)
     );
     ring.rotation.x = -Math.PI / 2;
     ring.position.set(0, 0.06, 0);

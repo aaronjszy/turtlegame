@@ -1,5 +1,5 @@
-const GROWTH_GOALS = [30, 100, null];
-const GROWTH_NAMES = ['Hatchling', 'Juvenile', 'Young Adult'];
+const GROWTH_GOALS = [30, 80, 160, 280, 420, null];
+const GROWTH_NAMES = ['Hatchling', 'Small Turtle', 'Juvenile', 'Young Adult', 'Adult', 'Elder Tortoise'];
 
 export class HUD {
   constructor(save) {
@@ -43,7 +43,7 @@ export class HUD {
       const filled = Math.round(pct * 8);
       const bar    = '█'.repeat(filled) + '░'.repeat(8 - filled);
       this._growthEl.innerHTML =
-        `🐢 ${GROWTH_NAMES[stage]} &nbsp;[${bar}]&nbsp; ${s.foodsEaten}/${goal} foods to grow`;
+        `🐢 ${GROWTH_NAMES[stage]} &nbsp;[${bar}]&nbsp; ${Math.min(s.foodsEaten, goal)}/${goal} foods to grow`;
     } else {
       this._growthEl.textContent = `🐢 ${GROWTH_NAMES[stage]} · Fully Grown! ✨`;
     }

@@ -6,9 +6,9 @@ const DAY_DURATION = 600;
 const SKY_COLORS = [
   { t: 0.0,  sky: 0x0a0520, amb: 0x5555aa }, // midnight
   { t: 0.2,  sky: 0xff6b35, amb: 0xff9966 }, // dawn
-  { t: 0.27, sky: 0x87ceeb, amb: 0xfff4d6 }, // morning
-  { t: 0.5,  sky: 0x5bbfff, amb: 0xffffff }, // noon
-  { t: 0.75, sky: 0xff9944, amb: 0xffd080 }, // dusk
+  { t: 0.27, sky: 0x78c8f0, amb: 0xffe8c0 }, // morning
+  { t: 0.5,  sky: 0x1aaaff, amb: 0xffffff }, // noon — deep vivid blue
+  { t: 0.75, sky: 0xff8822, amb: 0xffc060 }, // dusk — richer orange
   { t: 0.85, sky: 0x1a1035, amb: 0x6655aa }, // twilight
   { t: 1.0,  sky: 0x0a0520, amb: 0x5555aa }, // midnight again
 ];
@@ -41,11 +41,11 @@ export class DayNight {
     this.elapsed = save.dayElapsed ?? (DAY_DURATION * 0.27); // default to morning on fresh save
     this.dayFraction = 0; // 0–1 through day
 
-    this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    this.ambientLight = new THREE.AmbientLight(0xffffff, 0.55);
     scene.add(this.ambientLight);
 
     // Fill light — sky blue from above, warm tan from below. Never fully off.
-    this.hemi = new THREE.HemisphereLight(0x88aaff, 0xd4a84b, 0.6);
+    this.hemi = new THREE.HemisphereLight(0x5588ff, 0xcc9030, 0.45);
     scene.add(this.hemi);
 
     this.sun = new THREE.DirectionalLight(0xfff4d6, 1.2);
@@ -100,11 +100,11 @@ export class DayNight {
     // Sun arc: rises east (x+), sets west (x-)
     const angle = f * Math.PI * 2 - Math.PI / 2;
     this.sun.position.set(Math.cos(angle) * 60, Math.sin(angle) * 60, 30);
-    this.sun.intensity = this.isNight ? 0 : Math.max(0, Math.sin(f * Math.PI)) * 1.2;
+    this.sun.intensity = Math.max(0, Math.sin(f * Math.PI)) * 1.8;
 
-    // Hemisphere: full brightness midday, 0.2 floor at night so turtle is always visible
-    const dayStrength = this.isNight ? 0 : Math.max(0, Math.sin(f * Math.PI));
-    this.hemi.intensity = 0.2 + dayStrength * 0.5;
+    // Hemisphere: full brightness midday, low floor at night so shadows stay deep
+    const dayStrength = Math.max(0, Math.sin(f * Math.PI));
+    this.hemi.intensity = 0.08 + dayStrength * 0.55;
   }
 
   _updateDayInfo() {

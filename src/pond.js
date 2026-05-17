@@ -1,7 +1,7 @@
 const POND_X = -20;
 const POND_Z = -22;
 const POND_EDGE_R = 8.5;
-const DRINK_ZONE  = 3.5;   // distance from edge to trigger
+const DRINK_ZONE  = 0.5;   // distance from edge to trigger
 const DRINK_WAIT  = 2.2;   // seconds standing still
 const DRINK_HUNGER = 0.8;
 const DRINK_COOLDOWN = 10;
